@@ -1,4 +1,8 @@
 
-h1. SJMS - Java Message Service Studies
+h1. JMS - Java Message Service Studies
+
+
+
+
 
 Based upon  "Mark Richards' Java Message Service [Paperback] (2009)":http://www.amazon.com/Java-Message-Service-Mark-Richards/dp/0596522045

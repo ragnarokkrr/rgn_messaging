@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>rgn_messaging</groupId>
-    <artifactId>rgn_richards_messaging</artifactId>
+    <artifactId>rgn_jms_richards</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>rgn_richards_messaging_java</artifactId>
+  <artifactId>rgn_jms_richards_ch02</artifactId>
 </project>
