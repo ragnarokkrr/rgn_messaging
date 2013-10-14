@@ -2,7 +2,11 @@
 h1. JMS - Java Message Service Studies
 
 
+h2. Backlog
 
+* 001 - ch09
+* 002 - ch07
+* 003 - ch08
 
 
 Based upon  "Mark Richards' Java Message Service [Paperback] (2009)":http://www.amazon.com/Java-Message-Service-Mark-Richards/dp/0596522045

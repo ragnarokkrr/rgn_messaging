@@ -8,6 +8,7 @@
 	<modules>
 		<module>rgn_jms_richards_ch02</module>
 		<module>rgn_jms_richards_ch04</module>
+		<module>rgn_jms_richards_ch05</module>
 	</modules>
 	<properties>
 		<activemq-version>5.8.0</activemq-version>
