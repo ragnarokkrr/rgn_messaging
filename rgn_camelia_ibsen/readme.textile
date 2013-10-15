@@ -1,0 +1,10 @@
+
+h1. Camel in Action - Updated
+
+Camel in Action studies updated for the new version API.
+ 
+h2. Backlog
+
+* 0001 - ch01 
+
+h2. Reference
