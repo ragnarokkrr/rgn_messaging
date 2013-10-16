@@ -11,5 +11,6 @@
   	<module>rgn_camelia_ibsen_ch02_ftp_jms</module>
   	<module>rgn_camelia_ibsen_ch02_spring</module>
   	<module>rgn_camelia_ibsen_ch02_cbr</module>
+  	<module>rgn_camelia_ibsen_ch02_filter</module>
   </modules>
 </project>

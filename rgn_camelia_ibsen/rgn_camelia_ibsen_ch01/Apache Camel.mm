@@ -49,7 +49,7 @@
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="7"/>
+<hook NAME="AutomaticEdgeColor" COUNTER="8"/>
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>
 <node TEXT="Features" POSITION="right" ID="ID_86021633" CREATED="1381795097182" MODIFIED="1381795100529">
 <edge COLOR="#0000ff"/>
@@ -192,6 +192,10 @@
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_110655917" STARTINCLINATION="-299;89;" ENDINCLINATION="-23;93;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
+</node>
+<node TEXT="What is Camel?" POSITION="left" ID="ID_1144337571" CREATED="1381895133462" MODIFIED="1381895140445">
+<edge COLOR="#00007c"/>
+<node TEXT="At the core of the Camel framework is a routing engine, or more precisely a routingengine  builder.  It  allows  you  to  define  your  own  routing  rules,  decide  from  which&#xa;sources to accept messages, and determine how to process and send those messages to&#xa;other destinations. Camel uses an integration language that allows you to define complex routing rules, akin to business processes." ID="ID_1901571272" CREATED="1381895141737" MODIFIED="1381895144895"/>
 </node>
 </node>
 </map>
