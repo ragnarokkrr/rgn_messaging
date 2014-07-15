@@ -14,10 +14,10 @@
 		<geronimo-spec-version>1.1</geronimo-spec-version>
 		<junit-version>4.10</junit-version>
 		<log4j-version>1.2.14</log4j-version>
-		<springframework-version>3.1</springframework-version>
+		<springframework-version>2.5.6.SEC03</springframework-version>
 		<stax-version>1.0.1</stax-version>
 		<woodstox-version>3.2.7</woodstox-version>
-		<xbean-version>4.2.0</xbean-version>
+		<xbean-version>3.4</xbean-version>
 	</properties>
 	<dependencies>
 		<dependency>
