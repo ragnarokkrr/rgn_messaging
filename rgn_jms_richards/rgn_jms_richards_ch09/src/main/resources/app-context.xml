@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans     
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/tx 
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/context 
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://activemq.apache.org/schema/core
+            http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+
+	<!-- lets create an embedded ActiveMQ Broker -->
+	<amq:broker useJmx="true" persistent="false">
+		<amq:transportConnectors>
+			<amq:transportConnector uri="tcp://localhost:61636" />
+		</amq:transportConnectors>
+	</amq:broker>
+
+
+	<bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
+		<property name="environment">
+			<props>
+				<prop key="java.naming.factory.initial">
+					org.apache.activemq.jndi.ActiveMQInitialContextFactory
+				</prop>
+				<prop key="java.naming.provider.url">tcp://localhost:61616</prop>
+				<prop key="java.naming.security.principal">system</prop>
+				<prop key="java.naming.security.credentials">manager</prop>
+				<prop key="connectionFactoryNames">QueueCF</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="jndiQueueConnectionFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiTemplate" ref="jndiTemplate" />
+		<property name="jndiName" value="QueueCF" />
+	</bean>
+
+	<bean id="queueConnectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<property name="targetConnectionFactory" ref="jndiQueueConnectionFactory" />
+		<property name="sessionCacheSize" value="1" />
+	</bean>     
+</beans>
