@@ -17,11 +17,11 @@
 
 
 	<!-- lets create an embedded ActiveMQ Broker -->
-	<amq:broker useJmx="true" persistent="false">
-		<amq:transportConnectors>
-			<amq:transportConnector uri="tcp://localhost:61636" />
-		</amq:transportConnectors>
-	</amq:broker>
+<!-- 	<amq:broker useJmx="false" persistent="false"> -->
+<!-- 		<amq:transportConnectors> -->
+<!-- 			<amq:transportConnector uri="tcp://localhost:61616" /> -->
+<!-- 		</amq:transportConnectors> -->
+<!-- 	</amq:broker> -->
 
 
 	<bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
@@ -34,6 +34,9 @@
 				<prop key="java.naming.security.principal">system</prop>
 				<prop key="java.naming.security.credentials">manager</prop>
 				<prop key="connectionFactoryNames">QueueCF</prop>
+<!-- 				<prop key="queue.queue1">jms.queue1</prop> -->
+<!-- 				<prop key="queue.request">jms.request</prop> -->
+<!-- 				<prop key="queue.response">jms.response</prop>				 -->
 			</props>
 		</property>
 	</bean>
@@ -47,5 +50,25 @@
 		class="org.springframework.jms.connection.CachingConnectionFactory">
 		<property name="targetConnectionFactory" ref="jndiQueueConnectionFactory" />
 		<property name="sessionCacheSize" value="1" />
-	</bean>     
+	</bean>
+
+
+	<bean id="destinationResolver"
+		class="org.springframework.jms.support.destination.JndiDestinationResolver">
+		<property name="jndiTemplate" ref="jndiTemplate" />
+		<property name="cache" value="true" />
+		<property name="fallbackToDynamicDestination" value="false" />
+	</bean>
+	
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="queueConnectionFactory" />
+		<property name="destinationResolver" ref="destinationResolver" />
+		<property name="defaultDestinationName" value="queue1" />
+		<property name="pubSubDomain" value="false" />
+	</bean>	
+		
+	<bean id="queue1Dest" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiTemplate" ref="jndiTemplate" />
+		<property name="jndiName" value="queue1" />
+	</bean>		
 </beans>
