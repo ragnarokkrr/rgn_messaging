@@ -1,7 +1,8 @@
-package org.rgn.jms.richards.ch09.spring;
+package org.rgn.messaging.poc.reqrepl;
 
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
+import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
@@ -12,13 +13,18 @@ public class SpringMessageListener implements
 
 	public void onMessage(TextMessage msg, Session session) throws JMSException {
 		String text = msg.getText();
-		System.out.println(" SpringMessageListenertext=> " + text);
+		String correlation = msg.getJMSMessageID();
+		System.out.println(" SpringMessageListener text=> " + text);
+		System.out.println(" ReplyQueue: "
+				+ ((Queue) msg.getJMSReplyTo()).getQueueName());
+		String reply = String.format("Reply ---> (correlation:'%s', msg:'%s')",
+				correlation, text);
 
 		MessageProducer sender = session.createProducer(msg.getJMSReplyTo());
 
 		TextMessage resMsg = session.createTextMessage();
-		resMsg.setJMSCorrelationID(msg.getJMSCorrelationID());
-		resMsg.setText("Message " + msg.getJMSCorrelationID() + " received");
+		resMsg.setJMSCorrelationID(msg.getJMSMessageID());
+		resMsg.setText(reply);
 
 		sender.send(resMsg);
 

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans     
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/tx 
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/context 
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://activemq.apache.org/schema/core
+            http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+
+	<!-- lets create an embedded ActiveMQ Broker -->
+<!-- 	<amq:broker useJmx="false" persistent="false"> -->
+<!-- 		<amq:transportConnectors> -->
+<!-- 			<amq:transportConnector uri="tcp://localhost:61616" /> -->
+<!-- 		</amq:transportConnectors> -->
+<!-- 	</amq:broker> -->
+
+
+	<bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
+		<property name="environment">
+			<props>
+				<prop key="java.naming.factory.initial">
+					org.apache.activemq.jndi.ActiveMQInitialContextFactory
+				</prop>
+				<prop key="java.naming.provider.url">tcp://localhost:61616</prop>
+				<prop key="java.naming.security.principal">system</prop>
+				<prop key="java.naming.security.credentials">manager</prop>
+				<prop key="connectionFactoryNames">QueueCF</prop>
+<!-- 				<prop key="queue.queue1">jms.queue1</prop> -->
+<!-- 				<prop key="queue.request">jms.request</prop> -->
+<!-- 				<prop key="queue.response">jms.response</prop>				 -->
+			</props>
+		</property>
+	</bean>
+
+	<bean id="jndiQueueConnectionFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiTemplate" ref="jndiTemplate" />
+		<property name="jndiName" value="QueueCF" />
+	</bean>
+
+	<bean id="queueConnectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<property name="targetConnectionFactory" ref="jndiQueueConnectionFactory" />
+		<property name="sessionCacheSize" value="1" />
+	</bean>
+
+
+	<bean id="destinationResolver"
+		class="org.springframework.jms.support.destination.JndiDestinationResolver">
+		<property name="jndiTemplate" ref="jndiTemplate" />
+		<property name="cache" value="true" />
+		<property name="fallbackToDynamicDestination" value="false" />
+	</bean>
+	
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="queueConnectionFactory" />
+		<property name="destinationResolver" ref="destinationResolver" />
+		<property name="defaultDestinationName" value="queue1" />
+		<property name="receiveTimeout" value="30000"/> <!-- synch receive -->
+		<property name="pubSubDomain" value="false" />
+	</bean>	
+		
+	<bean id="queue1Dest" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiTemplate" ref="jndiTemplate" />
+		<property name="jndiName" value="queue1" />
+	</bean>
+	
+	
+	<!-- Jms Container -->
+	
+<!-- 	<bean id="messageListener" class="org.rgn.jms.richards.ch09.spring.SimpleJMSReceiver"/> -->
+		<bean id="messageListener" class="org.rgn.messaging.poc.reqrepl.SpringMessageListener"/>
+	
+	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="queueConnectionFactory"/>
+		<property name="destinationResolver" ref="destinationResolver"/>
+		<property name="concurrentConsumers" value="3"/>
+		<property name="destinationName" value="queue1"/>
+		<property name="messageListener" ref="messageListener"/>
+	</bean>
+	
+			
+</beans>
