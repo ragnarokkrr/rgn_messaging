@@ -89,7 +89,7 @@ public class SpringJmsModule {
 	}
 
 	@Bean(name = "messageClientDelegate")
-	public MessageDelegate ProxyFactoryBean() throws ClassNotFoundException {
+	public MessageDelegate messageClientDelegate() throws ClassNotFoundException {
 
 		ProxyFactoryBean proxyFactoryBean = new ProxyFactoryBean();
 		proxyFactoryBean
