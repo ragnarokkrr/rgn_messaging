@@ -7,7 +7,9 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.springframework.jms.listener.SessionAwareMessageListener;
+import org.springframework.stereotype.Component;
 
+@Component("messageListener")
 public class SpringMessageListener implements
 		SessionAwareMessageListener<TextMessage> {
 
