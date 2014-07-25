@@ -43,6 +43,11 @@ public class SimpleJmsSender {
 		responseVO = delegate.processa(new RequestVO2("aaaaassss"));
 
 		System.out.println(responseVO);
+
+//		responseVO = delegate.processa();
+//
+//		System.out.println(responseVO);
+
 	}
 
 	private static void testReqRepWithAdapter(ApplicationContext ctx) {

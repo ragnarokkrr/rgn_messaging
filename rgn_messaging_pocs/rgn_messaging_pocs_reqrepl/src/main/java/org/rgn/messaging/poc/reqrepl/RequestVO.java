@@ -3,6 +3,7 @@ package org.rgn.messaging.poc.reqrepl;
 import java.io.Serializable;
 
 public class RequestVO implements Serializable {
+	
 	/**
 	 * 
 	 */

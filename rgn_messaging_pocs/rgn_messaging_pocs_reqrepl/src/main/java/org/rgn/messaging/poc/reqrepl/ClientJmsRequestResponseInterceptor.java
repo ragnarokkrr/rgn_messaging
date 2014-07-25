@@ -40,10 +40,11 @@ public class ClientJmsRequestResponseInterceptor implements MethodInterceptor {
 		this.destQueue = destQueue;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 
-		final Serializable arg = (Serializable) invocation.getArguments()[0];
+		boolean hasArgs = invocation.getArguments().length > 0;
+		final Serializable args = hasArgs ? (Serializable) invocation
+				.getArguments()[0] : "NO_PARAMS";
 
 		Object response = jmsTemplate.execute(destQueue,
 				new ProducerCallback<Object>() {
@@ -62,7 +63,7 @@ public class ClientJmsRequestResponseInterceptor implements MethodInterceptor {
 								+ tempQueue.getQueueName());
 
 						ObjectMessage message = session
-								.createObjectMessage(arg);
+								.createObjectMessage(args);
 						message.setJMSReplyTo(tempQueue);
 
 						producer.send(message);

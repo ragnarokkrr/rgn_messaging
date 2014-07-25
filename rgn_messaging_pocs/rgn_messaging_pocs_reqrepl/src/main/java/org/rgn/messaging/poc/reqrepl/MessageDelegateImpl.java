@@ -15,4 +15,9 @@ public class MessageDelegateImpl implements MessageDelegate {
 		return new ResponseVO(requestVO2.toString());
 	}
 
+	public ResponseVO processa() {
+		System.out.println("ResponseVO processa()");
+		return new ResponseVO("NO PAYLOAD!!!!!");
+	}
+
 }
