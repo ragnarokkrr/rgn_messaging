@@ -8,15 +8,21 @@ import javax.jms.Queue;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.jms.support.destination.JndiDestinationResolver;
+import org.springframework.aop.framework.ProxyFactoryBean;
+
 
 @Configuration
 public class SpringJmsModule {
+	@Inject
+    private ApplicationContext applicationContext;
+	
 	@Inject
 	@Qualifier("jndiEnvironment")
 	private Properties jndiEnvironment;
@@ -32,9 +38,6 @@ public class SpringJmsModule {
 	@Inject
 	@Qualifier("queue2Dest")
 	private Queue queue2Dest;
-
-	@Inject
-	private BeanFactory beanFactory;
 
 	@Bean(name = "queueConnectionFactory")
 	public CachingConnectionFactory queueConnectionFactory() {
@@ -77,11 +80,26 @@ public class SpringJmsModule {
 
 	}
 
-	@Bean(name = "clientJmstRequestResponseInterceptor")
-	public ClientJmstRequestResponseInterceptor clienJmstRequestResponseInterceptor() {
-		ClientJmstRequestResponseInterceptor interceptor = new ClientJmstRequestResponseInterceptor(
+	@Bean(name = "clientJmsRequestResponseInterceptor")
+	public ClientJmsRequestResponseInterceptor clienJmstRequestResponseInterceptor() {
+		ClientJmsRequestResponseInterceptor interceptor = new ClientJmsRequestResponseInterceptor(
 				jmsTemplate(), queue2Dest);
 
 		return interceptor;
 	}
+
+	@Bean(name = "messageClientDelegate")
+	public MessageDelegate ProxyFactoryBean() throws ClassNotFoundException {
+
+		ProxyFactoryBean proxyFactoryBean = new ProxyFactoryBean();
+		proxyFactoryBean
+				.setProxyInterfaces(new Class[] { MessageDelegate.class });
+		//proxyFactoryBean.setTarget(null);
+		proxyFactoryBean
+				.setInterceptorNames(new String[] { "clientJmsRequestResponseInterceptor" });
+		proxyFactoryBean.setBeanFactory(applicationContext);
+		
+		return (MessageDelegate) proxyFactoryBean.getObject();
+	}
+
 }

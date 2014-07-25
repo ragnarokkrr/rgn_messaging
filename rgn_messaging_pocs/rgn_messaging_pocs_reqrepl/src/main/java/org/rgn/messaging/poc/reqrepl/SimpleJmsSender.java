@@ -12,8 +12,6 @@ import javax.jms.Session;
 import javax.jms.TemporaryQueue;
 import javax.jms.TextMessage;
 
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
@@ -25,26 +23,30 @@ public class SimpleJmsSender {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(
 				"app-context-jms-ns.xml");
 
-//		testReqRepWithAdapter(ctx);
-//
-//		testRequestReply(ctx);
-//
+		testRequestReply(ctx);
+
+		testReqRepWithAdapter(ctx);
+
+		testDynamicProxy(ctx);
+
+	}
+
+	private static void testDynamicProxy(ApplicationContext ctx) {
+		System.out.println("\n3) testDynamicProxy()\n");
 		MessageDelegate delegate = ctx.getBean("messageClientDelegate",
 				MessageDelegate.class);
-		
+
 		ResponseVO responseVO = delegate.processa(new RequestVO("sssssss"));
-		
+
 		System.out.println(responseVO);
 
 		responseVO = delegate.processa(new RequestVO2("aaaaassss"));
-		
-		System.out.println(responseVO);
 
-	
+		System.out.println(responseVO);
 	}
 
 	private static void testReqRepWithAdapter(ApplicationContext ctx) {
-		System.out.println("\n1) testReqRepWithAdapter()\n");
+		System.out.println("\n2) testReqRepWithAdapter()\n");
 		JmsTemplate jmsTemplate = ctx.getBean("jmsTemplate", JmsTemplate.class);
 		final Queue destQueue2 = ctx.getBean("queue2Dest", Queue.class);
 
@@ -105,7 +107,7 @@ public class SimpleJmsSender {
 
 	private static void testRequestReply(ApplicationContext ctx)
 			throws JMSException {
-		System.out.println("\n2) testRequestReply()\n");
+		System.out.println("\n1) testRequestReply()\n");
 		JmsTemplate jmsTemplate = ctx.getBean("jmsTemplate", JmsTemplate.class);
 		final Queue destQueue = ctx.getBean("queue1Dest", Queue.class);
 

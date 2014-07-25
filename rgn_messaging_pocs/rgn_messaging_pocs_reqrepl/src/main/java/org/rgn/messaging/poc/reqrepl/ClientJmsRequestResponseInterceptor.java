@@ -16,7 +16,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.ProducerCallback;
 
-public class ClientJmstRequestResponseInterceptor implements MethodInterceptor {
+public class ClientJmsRequestResponseInterceptor implements MethodInterceptor {
 
 	private JmsTemplate jmsTemplate;
 	private Queue destQueue;
@@ -29,11 +29,11 @@ public class ClientJmstRequestResponseInterceptor implements MethodInterceptor {
 		this.destQueue = destQueue;
 	}
 
-	public ClientJmstRequestResponseInterceptor() {
+	public ClientJmsRequestResponseInterceptor() {
 
 	}
 
-	public ClientJmstRequestResponseInterceptor(JmsTemplate jmsTemplate,
+	public ClientJmsRequestResponseInterceptor(JmsTemplate jmsTemplate,
 			Queue destQueue) {
 		super();
 		this.jmsTemplate = jmsTemplate;

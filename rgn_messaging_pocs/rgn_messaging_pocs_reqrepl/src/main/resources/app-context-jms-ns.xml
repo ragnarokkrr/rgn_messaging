@@ -51,15 +51,4 @@
 
 	</jms:listener-container>
 
-
-
-	<bean id="messageClientDelegate" class="org.springframework.aop.framework.ProxyFactoryBean">
-		<property name="interceptorNames">
-			<list>
-				<value>clientJmstRequestResponseInterceptor</value>
-			</list>
-		</property>
-		<property name="proxyInterfaces" value="org.rgn.messaging.poc.reqrepl.MessageDelegate" />
-	</bean>
-
 </beans>
