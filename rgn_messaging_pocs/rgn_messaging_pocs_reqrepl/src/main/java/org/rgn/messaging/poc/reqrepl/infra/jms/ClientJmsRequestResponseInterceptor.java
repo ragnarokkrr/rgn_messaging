@@ -1,4 +1,4 @@
-package org.rgn.messaging.poc.reqrepl;
+package org.rgn.messaging.poc.reqrepl.infra.jms;
 
 import java.io.Serializable;
 
@@ -16,6 +16,10 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.ProducerCallback;
 
+/**
+ * @author nilseu.padilha
+ *
+ */
 public class ClientJmsRequestResponseInterceptor implements MethodInterceptor {
 
 	private JmsTemplate jmsTemplate;

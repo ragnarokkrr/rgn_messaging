@@ -6,7 +6,9 @@ import javax.inject.Inject;
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
 
-import org.springframework.beans.factory.BeanFactory;
+import org.rgn.messaging.poc.reqrepl.infra.jms.ClientJmsRequestResponseInterceptor;
+import org.rgn.messaging.poc.reqrepl.service.MessageProcessor;
+import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -15,29 +17,17 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.jms.support.destination.JndiDestinationResolver;
-import org.springframework.aop.framework.ProxyFactoryBean;
-
 
 @Configuration
 public class SpringJmsModule {
-	@Inject
-    private ApplicationContext applicationContext;
-	
-	@Inject
-	@Qualifier("jndiEnvironment")
-	private Properties jndiEnvironment;
 
 	@Inject
 	@Qualifier("jndiQueueConnectionFactory")
 	private ConnectionFactory jndiQueueConnectionFactory;
 
 	@Inject
-	@Qualifier("messageDelegate")
-	private MessageDelegate messageDelegate;
-
-	@Inject
-	@Qualifier("queue2Dest")
-	private Queue queue2Dest;
+	@Qualifier("jndiEnvironment")
+	private Properties jndiEnvironment;
 
 	@Bean(name = "queueConnectionFactory")
 	public CachingConnectionFactory queueConnectionFactory() {
@@ -71,17 +61,20 @@ public class SpringJmsModule {
 	}
 
 	@Bean(name = "messageListenerAdapter")
-	public MessageListenerAdapter MessageListenerAdapter() {
+	public MessageListenerAdapter MessageListenerAdapter(
+			@Qualifier("messageProcessor") MessageProcessor messageProcessor) {
 		MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(
-				messageDelegate);
+				messageProcessor);
 
 		messageListenerAdapter.setDefaultListenerMethod("processa");
+
 		return messageListenerAdapter;
 
 	}
 
 	@Bean(name = "clientJmsRequestResponseInterceptor")
-	public ClientJmsRequestResponseInterceptor clienJmstRequestResponseInterceptor() {
+	public ClientJmsRequestResponseInterceptor clienJmstRequestResponseInterceptor(
+			@Qualifier("queue2Dest") Queue queue2Dest) {
 		ClientJmsRequestResponseInterceptor interceptor = new ClientJmsRequestResponseInterceptor(
 				jmsTemplate(), queue2Dest);
 
@@ -89,17 +82,22 @@ public class SpringJmsModule {
 	}
 
 	@Bean(name = "messageClientDelegate")
-	public MessageDelegate messageClientDelegate() throws ClassNotFoundException {
+	public MessageProcessor messageClientDelegate(
+			ApplicationContext applicationContext)
+			throws ClassNotFoundException {
 
 		ProxyFactoryBean proxyFactoryBean = new ProxyFactoryBean();
 		proxyFactoryBean
-				.setProxyInterfaces(new Class[] { MessageDelegate.class });
-		//proxyFactoryBean.setTarget(null);
+				.setProxyInterfaces(new Class[] { MessageProcessor.class });
+		// proxyFactoryBean.setTarget(null);
 		proxyFactoryBean
 				.setInterceptorNames(new String[] { "clientJmsRequestResponseInterceptor" });
+		// In a java config class, the application context is not automatically
+		// injected on a
+		// BeanFactoryAware bean
 		proxyFactoryBean.setBeanFactory(applicationContext);
-		
-		return (MessageDelegate) proxyFactoryBean.getObject();
+
+		return (MessageProcessor) proxyFactoryBean.getObject();
 	}
 
 }

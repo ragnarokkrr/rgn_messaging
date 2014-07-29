@@ -1,16 +1,15 @@
-package org.rgn.messaging.poc.reqrepl;
+package org.rgn.messaging.poc.reqrepl.service;
 
 import java.io.Serializable;
 
-public class RequestVO implements Serializable {
-	
+public class RequestVO2 implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7092325311683508162L;
 	private String value;
 
-	public RequestVO(String value) {
+	public RequestVO2(String value) {
 		super();
 		this.value = value;
 	}
@@ -21,7 +20,7 @@ public class RequestVO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "RequestVO [value=" + value + "]";
+		return "RequestVO2 [value=" + value + "]";
 	}
 
 }

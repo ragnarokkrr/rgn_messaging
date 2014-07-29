@@ -1,9 +1,9 @@
-package org.rgn.messaging.poc.reqrepl;
+package org.rgn.messaging.poc.reqrepl.service;
 
 import org.springframework.stereotype.Component;
 
-@Component("messageDelegate")
-public class MessageDelegateImpl implements MessageDelegate {
+@Component("messageProcessor")
+public class MessageProcessorImpl implements MessageProcessor {
 
 	public ResponseVO processa(RequestVO requestVO) {
 		System.out.println("ResponseVO processa(RequestVO requestVO)");
@@ -15,6 +15,7 @@ public class MessageDelegateImpl implements MessageDelegate {
 		return new ResponseVO(requestVO2.toString());
 	}
 
+	//ignore it... needs working
 	public ResponseVO processa() {
 		System.out.println("ResponseVO processa()");
 		return new ResponseVO("NO PAYLOAD!!!!!");

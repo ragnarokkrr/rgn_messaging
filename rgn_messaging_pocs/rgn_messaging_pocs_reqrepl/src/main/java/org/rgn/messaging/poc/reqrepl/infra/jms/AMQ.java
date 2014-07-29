@@ -1,4 +1,4 @@
-package org.rgn.messaging.poc.reqrepl;
+package org.rgn.messaging.poc.reqrepl.infra.jms;
 
 import java.net.URI;
 

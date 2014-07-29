@@ -1,6 +1,6 @@
-package org.rgn.messaging.poc.reqrepl;
+package org.rgn.messaging.poc.reqrepl.service;
 
-public interface MessageDelegate {
+public interface MessageProcessor {
 
 	ResponseVO processa(RequestVO requestVO);
 

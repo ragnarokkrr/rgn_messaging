@@ -75,7 +75,7 @@
 	<!-- Jms Container -->
 
 	<!-- <bean id="messageListener" class="org.rgn.jms.richards.ch09.spring.SimpleJMSReceiver"/> -->
-	<bean id="messageListener" class="org.rgn.messaging.poc.reqrepl.SpringMessageListener" />
+	<bean id="messageListener" class="org.rgn.messaging.poc.reqrepl.infra.jms.SpringMessageListener" />
 
 	<bean id="jmsContainer"
 		class="org.springframework.jms.listener.DefaultMessageListenerContainer">

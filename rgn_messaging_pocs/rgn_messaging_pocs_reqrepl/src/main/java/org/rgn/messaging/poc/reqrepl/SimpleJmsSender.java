@@ -12,6 +12,10 @@ import javax.jms.Session;
 import javax.jms.TemporaryQueue;
 import javax.jms.TextMessage;
 
+import org.rgn.messaging.poc.reqrepl.service.MessageProcessor;
+import org.rgn.messaging.poc.reqrepl.service.RequestVO;
+import org.rgn.messaging.poc.reqrepl.service.RequestVO2;
+import org.rgn.messaging.poc.reqrepl.service.ResponseVO;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
@@ -31,10 +35,18 @@ public class SimpleJmsSender {
 
 	}
 
+	/**
+	 * 
+	 * Dynamic proxy and
+	 * {@link org.rgn.messaging.poc.reqrepl.infra.jms.ClientJmsRequestResponseInterceptor}
+	 * in action
+	 * 
+	 * @param ctx
+	 */
 	private static void testDynamicProxy(ApplicationContext ctx) {
 		System.out.println("\n3) testDynamicProxy()\n");
-		MessageDelegate delegate = ctx.getBean("messageClientDelegate",
-				MessageDelegate.class);
+		MessageProcessor delegate = ctx.getBean("messageClientDelegate",
+				MessageProcessor.class);
 
 		ResponseVO responseVO = delegate.processa(new RequestVO("sssssss"));
 
@@ -44,12 +56,20 @@ public class SimpleJmsSender {
 
 		System.out.println(responseVO);
 
-//		responseVO = delegate.processa();
-//
-//		System.out.println(responseVO);
+		// responseVO = delegate.processa();
+		//
+		// System.out.println(responseVO);
 
 	}
 
+	/**
+	 * 
+	 * First test with
+	 * {@link org.springframework.jms.listener.adapter.MessageListenerAdapter}
+	 * adapter (calling queue2Dest)
+	 * 
+	 * @param ctx
+	 */
 	private static void testReqRepWithAdapter(ApplicationContext ctx) {
 		System.out.println("\n2) testReqRepWithAdapter()\n");
 		JmsTemplate jmsTemplate = ctx.getBean("jmsTemplate", JmsTemplate.class);
@@ -110,6 +130,15 @@ public class SimpleJmsSender {
 		return response;
 	}
 
+	/**
+	 * 
+	 * First test without
+	 * {@link org.springframework.jms.listener.adapter.MessageListenerAdapter}
+	 * (calling queue2Dest)
+	 * 
+	 * @param ctx
+	 * @throws JMSException
+	 */
 	private static void testRequestReply(ApplicationContext ctx)
 			throws JMSException {
 		System.out.println("\n1) testRequestReply()\n");

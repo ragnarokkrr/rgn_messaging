@@ -1,4 +1,4 @@
-package org.rgn.messaging.poc.reqrepl;
+package org.rgn.messaging.poc.reqrepl.service;
 
 import java.io.Serializable;
 
