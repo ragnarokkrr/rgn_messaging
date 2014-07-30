@@ -41,16 +41,13 @@
 	<jee:jndi-lookup id="queue2Dest" jndi-name="queue2"
 		environment-ref="jndiEnvironment" expected-type="javax.jms.Queue" />
 
-	<jee:jndi-lookup id="queue3Dest" jndi-name="queue3"
-		environment-ref="jndiEnvironment" expected-type="javax.jms.Queue" />
-
 	<!-- Jms Container -->
 
 	<jms:listener-container connection-factory="queueConnectionFactory"
 		destination-resolver="destinationResolver" concurrency="10">
 
-		<jms:listener destination="queue1" ref="messageListener" />
-		<jms:listener destination="queue2" ref="messageListenerAdapter" />
+<!-- 		<jms:listener destination="queue1" ref="messageListener" /> -->
+<!-- 		<jms:listener destination="queue2" ref="messageListenerAdapter" /> -->
 
 	</jms:listener-container>
 

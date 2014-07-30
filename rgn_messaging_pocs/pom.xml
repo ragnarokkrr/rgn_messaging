@@ -6,5 +6,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>rgn_messaging_pocs_reqrepl</module>
+  	<module>rgn_messaging_pocs_reqrepl_contract</module>
   </modules>
 </project>

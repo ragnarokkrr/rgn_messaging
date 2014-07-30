@@ -16,6 +16,8 @@ import org.rgn.messaging.poc.reqrepl.service.MessageProcessor;
 import org.rgn.messaging.poc.reqrepl.service.RequestVO;
 import org.rgn.messaging.poc.reqrepl.service.RequestVO2;
 import org.rgn.messaging.poc.reqrepl.service.ResponseVO;
+import org.rgn.messaging.poc.springremoting.service.HelloService;
+import org.rgn.messaging.poc.springremoting.service.Person;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
@@ -27,11 +29,29 @@ public class SimpleJmsSender {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(
 				"app-context-jms-ns.xml");
 
-		testRequestReply(ctx);
+		HelloService helloService = ctx.getBean("helloServiceProxy",
+				HelloService.class);
 
-		testReqRepWithAdapter(ctx);
+		for (int i = 0; i < 5; i++) {
+			Person p = new Person(i, "John", "Silva");
 
-		testDynamicProxy(ctx);
+			System.out.println("Enviando " + p);
+
+			String response = helloService.sayHello(p);
+
+			System.out.println(i + ")  Resultado espringue: " + response);
+			response = helloService.sayGoodBye(p);
+
+			System.out.println(i + ")  Resultado espringue: " + response);
+
+		}
+
+		//
+		// testRequestReply(ctx);
+		//
+		// testReqRepWithAdapter(ctx);
+		//
+		// testDynamicProxy(ctx);
 
 	}
 

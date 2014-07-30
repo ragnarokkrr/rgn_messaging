@@ -6,9 +6,7 @@
 		<artifactId>rgn_messaging_pocs</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>rgn_messaging_pocs_reqrepl</artifactId>
-
-
+	<artifactId>rgn_messaging_pocs_reqrepl_contract</artifactId>
 
 	<dependencies>
 
@@ -55,26 +53,8 @@
 			<version>1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.logicblaze.lingo</groupId>
-			<artifactId>lingo</artifactId>
-			<version>1.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-jms</artifactId>
-			<version>2.13.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-spring-osgi</artifactId>
-			<version>2.3.0</version>
-			<scope>runtime</scope>
-		</dependency>
-
 	</dependencies>
+
 
 
 </project>
